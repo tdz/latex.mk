@@ -6,6 +6,9 @@
 # LaTex input file
 PDF_SOURCE ?=
 
+# BibTex input files
+BIB_FILES ?=
+
 # Image input files
 JPEG_IMAGES ?=
 JPEG_SOURCES ?=
@@ -43,6 +46,9 @@ CP ?= cp
 MV ?= mv
 RM ?= rm -f
 
+# BibTeX
+BIBTEX ?= bibtex
+
 # LaTex toolchain
 LATEX_FILE_SUFFIX := .aux \
                      .bbl \
@@ -79,9 +85,10 @@ clean :
 
 pdf : $(PDF_OUTPUT)
 
-$(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES)
+$(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
+	$(BIBTEX) $(basename $<)
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
 
