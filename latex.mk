@@ -3,8 +3,9 @@
 # User Variables
 #
 
-# LaTex input file
+# LaTex input files
 PDF_SOURCE ?=
+EXTRA_PDF_SOURCES ?=
 
 # BibTex input files
 BIB_FILES ?=
@@ -65,6 +66,9 @@ LATEX_FILE_SUFFIX := .aux \
 PDFLATEX ?= pdflatex
 PDFLATEX_FLAGS += -halt-on-error
 
+# Includes PDF source file plus \input'ed TeX files
+TEX_FILES := $(PDF_SOURCE) $(EXTRA_PDF_SOURCES)
+
 # makeindex
 MAKEINDEX ?= makeindex
 MAKEINDEX_FLAGS += -q
@@ -94,7 +98,7 @@ clean :
 
 pdf : $(PDF_OUTPUT)
 
-$(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES) $(BIB_FILES)
+$(PDF_OUTPUT) : $(TEX_FILES) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 	$(PDFLATEX) $(PDFLATEX_FLAGS) -draftmode $<
 ifneq ($(BIB_FILES),)
