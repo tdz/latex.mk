@@ -88,8 +88,10 @@ pdf : $(PDF_OUTPUT)
 $(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
+ifneq ($(BIB_FILES),)
 	$(BIBTEX) $(basename $<)
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
+endif
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
 
 %.jpg : %.png
