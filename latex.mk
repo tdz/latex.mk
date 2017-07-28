@@ -54,6 +54,8 @@ BIBTEX_FLAGS += -terse
 LATEX_FILE_SUFFIX := .aux \
                      .bbl \
                      .blg \
+                     .idx \
+                     .ind \
                      .log \
                      .nav \
                      .snm \
@@ -62,6 +64,12 @@ LATEX_FILE_SUFFIX := .aux \
                      .vrb
 PDFLATEX ?= pdflatex
 PDFLATEX_FLAGS += -halt-on-error
+
+# makeindex
+MAKEINDEX ?= makeindex
+MAKEINDEX_FLAGS += -q
+
+IDX_FILE := $(patsubst %.tex,%.idx,$(PDF_SOURCE))
 
 # Graphviz
 DOT ?= dot
@@ -92,6 +100,9 @@ $(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES) $(BIB_FILES)
 ifneq ($(BIB_FILES),)
 	$(BIBTEX) $(BIBTEX_FLAGS) $(basename $<)
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
+endif
+ifneq ($(wildcard $(IDX_FILE)),)
+	$(MAKEINDEX) $(MAKEINDEX_FLAGS) $(basename $<)
 endif
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
 
