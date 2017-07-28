@@ -96,10 +96,10 @@ pdf : $(PDF_OUTPUT)
 
 $(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
-	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
+	$(PDFLATEX) $(PDFLATEX_FLAGS) -draftmode $<
 ifneq ($(BIB_FILES),)
 	$(BIBTEX) $(BIBTEX_FLAGS) $(basename $<)
-	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
+	$(PDFLATEX) $(PDFLATEX_FLAGS) -draftmode $<
 endif
 ifneq ($(wildcard $(IDX_FILE)),)
 	$(MAKEINDEX) $(MAKEINDEX_FLAGS) $(basename $<)
