@@ -48,6 +48,7 @@ RM ?= rm -f
 
 # BibTeX
 BIBTEX ?= bibtex
+BIBTEX_FLAGS += -terse
 
 # LaTex toolchain
 LATEX_FILE_SUFFIX := .aux \
@@ -89,7 +90,7 @@ $(PDF_OUTPUT) : $(PDF_SOURCE) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
 ifneq ($(BIB_FILES),)
-	$(BIBTEX) $(basename $<)
+	$(BIBTEX) $(BIBTEX_FLAGS) $(basename $<)
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
 endif
 	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
