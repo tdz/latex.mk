@@ -43,6 +43,9 @@ PDFLATEX_FLAGS ?=
 CONVERT_FLAGS ?=
 CONVERT_QUALITY ?= 50
 
+# Flags for hunspell
+HUNSPELL_FLAGS ?=
+
 
 #
 # Automatic Variables
@@ -100,20 +103,28 @@ DOT_FLAGS +=
 CONVERT ?= convert
 CONVERT_FLAGS += -quality $(CONVERT_QUALITY)
 
+# Hunspell
+HUNSPELL ?= hunspell
+
 
 #
 # Rules
 #
 
-.PHONY = all clean pdf
+.PHONY = all check clean pdf spellcheck
 
 all : pdf
+
+check : spellcheck
 
 clean :
 	$(RM) $(PDF_OUTPUT) $(JPEG_OUTPUT) $(PNG_OUTPUT)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 
 pdf : $(PDF_OUTPUT)
+
+spellcheck : $(PDF_SOURCE)
+	$(HUNSPELL) $(HUNSPELL_FLAGS) $(PDF_SOURCE)
 
 $(PDF_OUTPUT) : $(TEX_FILES) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
