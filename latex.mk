@@ -36,6 +36,9 @@ PNG_SOURCES ?=
 # Dot input files
 DOT_SOURCES ?=
 
+# Files to clean up
+EXTRA_CLEAN_FILES ?=
+
 # Flags for pdflatex
 PDFLATEX_FLAGS ?=
 
@@ -118,6 +121,9 @@ all : pdf
 check : spellcheck
 
 clean :
+ifneq ($(EXTRA_CLEAN_FILES),)
+	$(RM) $(EXTRA_CLEAN_FILES)
+endif
 	$(RM) $(PDF_OUTPUT) $(JPEG_OUTPUT) $(PNG_OUTPUT)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 
