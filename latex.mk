@@ -56,8 +56,8 @@ HUNSPELL_FLAGS ?=
 
 CLEAN_FILES := $(EXTRA_CLEAN_FILES)
 
-PDF_OUTPUT := $(patsubst %.tex,%.pdf,$(PDF_SOURCE))
-CLEAN_FILES += $(PDF_OUTPUT)
+PDF_TARGET := $(patsubst %.tex,%.pdf,$(PDF_SOURCE))
+CLEAN_FILES += $(PDF_TARGET)
 
 JPEG_OUTPUT := $(patsubst %.png,%.jpg,$(JPEG_SOURCES))
 CLEAN_FILES += $(JPEG_OUTPUT)
@@ -139,12 +139,12 @@ ifneq ($(strip $(CLEAN_FILES)),)
 	$(RM) $(CLEAN_FILES)
 endif
 
-pdf : $(PDF_OUTPUT)
+pdf : $(PDF_TARGET)
 
 spellcheck : $(PDF_SOURCE)
 	$(HUNSPELL) $(HUNSPELL_FLAGS) $(PDF_SOURCE)
 
-$(PDF_OUTPUT) : $(TEX_FILES) $(IMAGES) $(BIB_FILES)
+$(PDF_TARGET) : $(TEX_FILES) $(IMAGES) $(BIB_FILES)
 	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 	$(PDFLATEX) $(PDFLATEX_FLAGS) -draftmode $<
 ifneq ($(BIB_FILES),)
