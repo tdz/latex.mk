@@ -54,11 +54,16 @@ HUNSPELL_FLAGS ?=
 # Automatic Variables
 #
 
+CLEAN_FILES := $(EXTRA_CLEAN_FILES)
+
 PDF_OUTPUT := $(patsubst %.tex,%.pdf,$(PDF_SOURCE))
+CLEAN_FILES += $(PDF_OUTPUT)
 
 JPEG_OUTPUT := $(patsubst %.png,%.jpg,$(JPEG_SOURCES))
+CLEAN_FILES += $(JPEG_OUTPUT)
 
 PNG_OUTPUT := $(patsubst %.dot,%-dot.png,$(PNG_SOURCES))
+CLEAN_FILES += $(PNG_OUTPUT)
 
 IMAGES := $(JPEG_IMAGES) \
           $(JPEG_OUTPUT) \
@@ -82,6 +87,9 @@ LATEX_FILE_SUFFIX := .aux \
                      .toc \
                      .out \
                      .vrb
+ifneq ($(PDF_SOURCE),)
+CLEAN_FILES += $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
+endif
 
 
 #
@@ -127,11 +135,9 @@ all : pdf
 check : spellcheck
 
 clean :
-ifneq ($(EXTRA_CLEAN_FILES),)
-	$(RM) $(EXTRA_CLEAN_FILES)
+ifneq ($(strip $(CLEAN_FILES)),)
+	$(RM) $(CLEAN_FILES)
 endif
-	$(RM) $(PDF_OUTPUT) $(JPEG_OUTPUT) $(PNG_OUTPUT)
-	$(RM) $(addprefix $(basename $(PDF_SOURCE)), $(LATEX_FILE_SUFFIX))
 
 pdf : $(PDF_OUTPUT)
 
