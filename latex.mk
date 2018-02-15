@@ -65,16 +65,12 @@ IMAGES := $(JPEG_IMAGES) \
           $(PNG_IMAGES) \
           $(PNG_OUTPUT)
 
-# System tools
-CP ?= cp
-MV ?= mv
-RM ?= rm -f
+# Includes PDF source file plus \input'ed TeX files
+TEX_FILES := $(PDF_SOURCE) $(EXTRA_PDF_SOURCES)
 
-# BibTeX
-BIBTEX ?= bibtex
-BIBTEX_FLAGS += -terse
+IDX_FILE := $(patsubst %.tex,%.idx,$(PDF_SOURCE))
 
-# LaTex toolchain
+# LaTeX toolchain
 LATEX_FILE_SUFFIX := .aux \
                      .bbl \
                      .blg \
@@ -86,17 +82,27 @@ LATEX_FILE_SUFFIX := .aux \
                      .toc \
                      .out \
                      .vrb
+
+
+#
+# Tools
+#
+
+# System tools
+CP ?= cp
+MV ?= mv
+RM ?= rm -f
+
+# BibTeX
+BIBTEX ?= bibtex
+BIBTEX_FLAGS += -terse
+
 PDFLATEX ?= pdflatex
 PDFLATEX_FLAGS += -halt-on-error
-
-# Includes PDF source file plus \input'ed TeX files
-TEX_FILES := $(PDF_SOURCE) $(EXTRA_PDF_SOURCES)
 
 # makeindex
 MAKEINDEX ?= makeindex
 MAKEINDEX_FLAGS += -q
-
-IDX_FILE := $(patsubst %.tex,%.idx,$(PDF_SOURCE))
 
 # Graphviz
 DOT ?= dot
